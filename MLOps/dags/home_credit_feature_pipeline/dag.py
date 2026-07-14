@@ -17,8 +17,6 @@ with DAG(
 
 ) as dag:
 
-
-
     @task
     def read_data_and_transform_abt(var=None, ti=None):
         data = _read_data_and_transform_abt(var=var)
