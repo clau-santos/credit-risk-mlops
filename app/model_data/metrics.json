@@ -1,0 +1,187 @@
+{
+  "best_model": "HistGradientBoosting",
+  "threshold_otimo": 0.4811,
+  "logistic_regression": {
+    "auc": 0.7452,
+    "ks": 0.3658,
+    "gini": 0.4903
+  },
+  "hist_gradient_boosting": {
+    "auc": 0.7622,
+    "ks": 0.39,
+    "gini": 0.5244
+  },
+  "n_treino": 246008,
+  "n_teste": 61503,
+  "taxa_inadimplencia": 0.0807,
+  "features": [
+    "AMT_INCOME_TOTAL",
+    "AMT_CREDIT",
+    "AMT_GOODS_PRICE",
+    "CNT_FAM_MEMBERS",
+    "AMT_ANNUITY",
+    "EXT_SOURCE_1",
+    "EXT_SOURCE_2",
+    "EXT_SOURCE_3",
+    "CNT_CHILDREN",
+    "AGE_YEARS",
+    "YEARS_EMPLOYED",
+    "EMPLOYED_TO_AGE",
+    "CREDIT_INCOME_RATIO",
+    "ANNUITY_INCOME_RATIO",
+    "CREDIT_TERM",
+    "CREDIT_GOODS_RATIO",
+    "INCOME_PER_PERSON",
+    "EXT_SOURCE_MEAN",
+    "EXT_SOURCE_STD",
+    "EXT_SOURCE_MIN",
+    "EXT_SOURCE_MAX",
+    "CODE_GENDER_F",
+    "CODE_GENDER_M",
+    "CODE_GENDER_nan",
+    "FLAG_OWN_CAR_N",
+    "FLAG_OWN_CAR_Y",
+    "FLAG_OWN_CAR_nan",
+    "FLAG_OWN_REALTY_N",
+    "FLAG_OWN_REALTY_Y",
+    "FLAG_OWN_REALTY_nan",
+    "NAME_INCOME_TYPE_Businessman",
+    "NAME_INCOME_TYPE_Commercial associate",
+    "NAME_INCOME_TYPE_Maternity leave",
+    "NAME_INCOME_TYPE_Pensioner",
+    "NAME_INCOME_TYPE_State servant",
+    "NAME_INCOME_TYPE_Student",
+    "NAME_INCOME_TYPE_Unemployed",
+    "NAME_INCOME_TYPE_Working",
+    "NAME_INCOME_TYPE_nan",
+    "NAME_FAMILY_STATUS_Civil marriage",
+    "NAME_FAMILY_STATUS_Married",
+    "NAME_FAMILY_STATUS_Separated",
+    "NAME_FAMILY_STATUS_Single / not married",
+    "NAME_FAMILY_STATUS_Unknown",
+    "NAME_FAMILY_STATUS_Widow",
+    "NAME_FAMILY_STATUS_nan",
+    "NAME_EDUCATION_TYPE_Academic degree",
+    "NAME_EDUCATION_TYPE_Higher education",
+    "NAME_EDUCATION_TYPE_Incomplete higher",
+    "NAME_EDUCATION_TYPE_Lower secondary",
+    "NAME_EDUCATION_TYPE_Secondary / secondary special",
+    "NAME_EDUCATION_TYPE_nan"
+  ],
+  "defaults": {
+    "AMT_INCOME_TOTAL": 147150.0,
+    "AMT_CREDIT": 513531.0,
+    "AMT_GOODS_PRICE": 450000.0,
+    "CNT_FAM_MEMBERS": 2.0,
+    "AMT_ANNUITY": 24903.0,
+    "EXT_SOURCE_1": 0.50599796,
+    "EXT_SOURCE_2": 0.5659614,
+    "EXT_SOURCE_3": 0.53527623,
+    "CNT_CHILDREN": 0.0,
+    "AGE_YEARS": 43.12115,
+    "YEARS_EMPLOYED": 4.511978,
+    "EMPLOYED_TO_AGE": 0.11873291,
+    "CREDIT_INCOME_RATIO": 3.2650666,
+    "ANNUITY_INCOME_RATIO": 0.16283333,
+    "CREDIT_TERM": 0.05,
+    "CREDIT_GOODS_RATIO": 1.1188,
+    "INCOME_PER_PERSON": 74999.75,
+    "EXT_SOURCE_MEAN": 0.524502,
+    "EXT_SOURCE_STD": 0.13602094,
+    "EXT_SOURCE_MIN": 0.40316707,
+    "EXT_SOURCE_MAX": 0.6484702,
+    "CODE_GENDER_F": 1.0,
+    "CODE_GENDER_M": 0.0,
+    "CODE_GENDER_nan": 0.0,
+    "FLAG_OWN_CAR_N": 1.0,
+    "FLAG_OWN_CAR_Y": 0.0,
+    "FLAG_OWN_CAR_nan": 0.0,
+    "FLAG_OWN_REALTY_N": 0.0,
+    "FLAG_OWN_REALTY_Y": 1.0,
+    "FLAG_OWN_REALTY_nan": 0.0,
+    "NAME_INCOME_TYPE_Businessman": 0.0,
+    "NAME_INCOME_TYPE_Commercial associate": 0.0,
+    "NAME_INCOME_TYPE_Maternity leave": 0.0,
+    "NAME_INCOME_TYPE_Pensioner": 0.0,
+    "NAME_INCOME_TYPE_State servant": 0.0,
+    "NAME_INCOME_TYPE_Student": 0.0,
+    "NAME_INCOME_TYPE_Unemployed": 0.0,
+    "NAME_INCOME_TYPE_Working": 1.0,
+    "NAME_INCOME_TYPE_nan": 0.0,
+    "NAME_FAMILY_STATUS_Civil marriage": 0.0,
+    "NAME_FAMILY_STATUS_Married": 1.0,
+    "NAME_FAMILY_STATUS_Separated": 0.0,
+    "NAME_FAMILY_STATUS_Single / not married": 0.0,
+    "NAME_FAMILY_STATUS_Unknown": 0.0,
+    "NAME_FAMILY_STATUS_Widow": 0.0,
+    "NAME_FAMILY_STATUS_nan": 0.0,
+    "NAME_EDUCATION_TYPE_Academic degree": 0.0,
+    "NAME_EDUCATION_TYPE_Higher education": 0.0,
+    "NAME_EDUCATION_TYPE_Incomplete higher": 0.0,
+    "NAME_EDUCATION_TYPE_Lower secondary": 0.0,
+    "NAME_EDUCATION_TYPE_Secondary / secondary special": 1.0,
+    "NAME_EDUCATION_TYPE_nan": 0.0
+  },
+  "top_features": [
+    [
+      "EXT_SOURCE_MEAN",
+      0.08131
+    ],
+    [
+      "CREDIT_TERM",
+      0.01642
+    ],
+    [
+      "AGE_YEARS",
+      0.01138
+    ],
+    [
+      "CREDIT_GOODS_RATIO",
+      0.00689
+    ],
+    [
+      "EXT_SOURCE_1",
+      0.0053
+    ],
+    [
+      "FLAG_OWN_CAR_N",
+      0.00384
+    ],
+    [
+      "CODE_GENDER_M",
+      0.00382
+    ],
+    [
+      "EXT_SOURCE_3",
+      0.00376
+    ],
+    [
+      "EMPLOYED_TO_AGE",
+      0.00367
+    ],
+    [
+      "CODE_GENDER_F",
+      0.00364
+    ],
+    [
+      "EXT_SOURCE_MAX",
+      0.00292
+    ],
+    [
+      "EXT_SOURCE_MIN",
+      0.00276
+    ],
+    [
+      "AMT_GOODS_PRICE",
+      0.00268
+    ],
+    [
+      "NAME_EDUCATION_TYPE_Higher education",
+      0.00265
+    ],
+    [
+      "YEARS_EMPLOYED",
+      0.00222
+    ]
+  ]
+}
