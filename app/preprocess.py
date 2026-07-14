@@ -97,7 +97,6 @@ def build_features(
     # One-Hot Encoding
     # ==========================
 
-    # Zera todas as colunas categóricas
     for col in FEATURES:
 
         if (
@@ -111,21 +110,18 @@ def build_features(
             row[col] = 0
 
     # Sexo
-
     gender_col = f"CODE_GENDER_{"F" if sexo == "Feminino" else "M"}"
 
     if gender_col in row:
         row[gender_col] = 1
 
     # Carro
-
     car_col = f"FLAG_OWN_CAR_{'Y' if possui_carro else 'N'}"
 
     if car_col in row:
         row[car_col] = 1
 
     # Imóvel
-
     house_col = f"FLAG_OWN_REALTY_{'Y' if possui_imovel else 'N'}"
 
     if house_col in row:
