@@ -1,7 +1,6 @@
+import pandas as pd
 from minio import Minio
 import io
-import json
-
 
 class MinioClient:
     def __init__(self, bucket_suffix: str, var=None):
@@ -19,38 +18,40 @@ class MinioClient:
         )
         return minio_client
 
-    def save_data(self, data: dict, file_name: str):
+    def save_data(self, data: pd.DataFrame, file_name: str):
         bucket_name = self.bucket_name
         minio_client = self._client_minio()
-
-        json_data = json.dumps(data, ensure_ascii=False).encode("utf-8")
-        file_path = f"{file_name}.csv"
 
         if not minio_client.bucket_exists(bucket_name):
             minio_client.make_bucket(bucket_name)
             print(f"Bucket '{bucket_name}' criado com sucesso!")
 
+        print("Iniciando criação do arquivo.")
+        csv_buffer = io.StringIO()
+        data.to_csv(csv_buffer, index=False)
+        csv_bytes = csv_buffer.getvalue().encode("utf-8")
+
         try:
             minio_client.put_object(
                 bucket_name=bucket_name,
-                object_name=file_path,
-                data=io.BytesIO(json_data),
-                length=len(json_data),
-                content_type="application/json"
+                object_name=file_name,
+                data=io.BytesIO(csv_bytes),
+                length=len(csv_bytes),
+                content_type="text/csv",
             )
+            print(f"Arquivo '{file_name}' criado com sucesso!")
         except Exception as any_exception:
             raise any_exception
 
-    def read_data_from_bucket(self, file_name: str) -> dict:
+    def read_data_from_bucket(self, file_name: str) -> pd.DataFrame:
         """
         Recupera os arquivos existentes em um bucket do minIO.
         """
         bucket_name = self.bucket_name
         minio_client = self._client_minio()
 
-        file_path = f"{file_name}.csv"
-
-        with minio_client.get_object(bucket_name=bucket_name, object_name=file_path) as d:
-            data = json.load(d)
+        print(f"Iniciando leitura do arquivo. {file_name}")
+        with minio_client.get_object(bucket_name=bucket_name, object_name=file_name) as d:
+            data = pd.read_csv(io.BytesIO(d.read()))
 
         return data
