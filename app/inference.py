@@ -2,11 +2,11 @@ import joblib
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[1]
 
 class CreditRiskModel:
 
-    def __init__(self, model_path=f"{ROOT}/credit-risk-mlops/app/model_data/model_pd.pkl"):
+    def __init__(self, model_path=f"{ROOT}/Model/model_pd.pkl"):
         self.model = joblib.load(model_path)
 
     def predict(self, features):

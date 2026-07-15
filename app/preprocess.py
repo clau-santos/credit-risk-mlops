@@ -6,11 +6,13 @@ import pandas as pd
 
 from app.de_para import ESTADO_CIVIL, TIPO_RENDA, ESCOLARIDADE
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[1]
 
-model = joblib.load(ROOT / "credit-risk-mlops/app/model_data" / "model_pd.pkl")
 
-artifact = json.load(open(ROOT / "credit-risk-mlops/app/model_data" / "metrics.json"))
+model = joblib.load(ROOT / "Model" / "model_pd.pkl")
+
+artifact = json.load(open(ROOT / "Model" / "metrics.json"))
+
 
 FEATURES = artifact["features"]
 DEFAULTS = artifact["defaults"]
@@ -136,7 +138,6 @@ def build_features(
 
     # Estado civil
     estado_civil = ESTADO_CIVIL[estado_civil]
-    print(estado_civil)
     family_col = f"NAME_FAMILY_STATUS_{estado_civil}"
 
     if family_col in row:
@@ -144,7 +145,6 @@ def build_features(
 
     # Escolaridade
     escolaridade = ESCOLARIDADE[escolaridade]
-    print(escolaridade)
     education_col = f"NAME_EDUCATION_TYPE_{escolaridade}"
 
     if education_col in row:

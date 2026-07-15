@@ -1,0 +1,56 @@
+# ============================================================
+# Configuracao do MODELO e da POLITICA DE LIMITE
+# Projeto Final FIA/LABDATA — Sistema Inteligente de Limite de Credito
+# ============================================================
+
+paths:
+  raw:   "Dados/raw.csv"                 # entrada (saida do abt_transform)
+  clean: "Dados/clean_data.csv"
+  abt: "Dados/abt.csv"
+  model:            "Model/model_pd.pkl"            # modelo de PD salvo
+  metrics:          "Model/metrics.json"            # metricas do treino
+  test_predictions: "Model/test_predictions.csv"    # PD no conjunto de teste (p/ avaliacao)
+
+columns:
+  id: "SK_ID_CURR"
+  target: "TARGET"
+  income: "AMT_INCOME_TOTAL"     # renda anual (usada pela politica)
+
+model:
+  test_size: 0.2
+  random_state: 42
+  # HistGradientBoosting (modelo principal)
+  hgb_max_iter: 300
+  hgb_learning_rate: 0.05
+  hgb_max_depth: 6
+  hgb_l2: 1.0
+  # Regressao Logistica (baseline interpretavel)
+  lr_max_iter: 1000
+
+# ---------- Politica de credito (Capacidade x Risco) ----------
+policy:
+  income_is_annual: true     # AMT_INCOME_TOTAL e anual -> /12 para mensal
+  dti_cap: 0.30              # prestacao maxima = 30% da renda mensal
+  monthly_rate: 0.025        # 2,5% a.m. (taxa assumida p/ valor presente)
+  lgd: 0.45                  # Loss Given Default (p/ perda esperada)
+  # Faixas: [nome, pd_max, prazo_meses, multiplicador_do_limite]
+  bands:
+    - ["A", 0.05, 48, 1.00]
+    - ["B", 0.15, 36, 0.70]
+    - ["C", 0.30, 24, 0.40]
+    - ["D", 0.60, 12, 0.15]
+    - ["E", 1.01,  0, 0.00]   # PD > 60% -> recusar
+
+sanitization:
+#  null_drop_threshold: 0.5          # descartar colunas com mais de 50% de nulos
+#  impute_strategy: "median"         # imputar valores faltantes pela mediana
+#  drop_cols: ["FLAG_MOBIL", "FLAG_DOCUMENT_2", "FLAG_DOCUMENT_4"]  # colunas irrelevantes
+#  cast_float32: true                # reduzir tamanho dos dados
+  days_employed_sentinel: 365243   # valor especial usado para indicar desempregado
+  xna_to_nan: ["NAME_EDUCATION_TYPE", "OCCUPATION_TYPE"]  # colunas com valor 'XNA' a substituir por NaN
+  income_cap: 1_000_000   # teto máximo de renda para evitar outliers
+
+
+metadata:
+  autor: "Daniel, Claudia,Elizabeth"
+  etapa_crisp_dm: "Modeling + Decisao"

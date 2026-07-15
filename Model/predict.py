@@ -131,7 +131,7 @@ with col1:
 
 with col2:
     valor_credito = st.number_input(
-        "Valor do Empréstimo (R$)",
+        "Valor do Empréstimo já concedido(R$)",
         min_value=0.0,
         value=120000.0,
         step=1000.0,

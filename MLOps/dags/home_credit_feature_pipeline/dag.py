@@ -1,10 +1,11 @@
 from airflow import DAG
 from airflow.decorators import task
+from airflow.operators.trigger_dagrun import trigger_dag
 
-from datetime import datetime
 
-from home_credit_feature_pipeline.tasks import _read_data_and_transform_abt
-from utils.minio import MinioClient
+from datetime import datetime, UTC
+
+from home_credit_feature_pipeline.tasks import _read_data_and_transform_abt, _save_abt
 
 with DAG(
     dag_id="home_credit_feature_pipeline",
@@ -22,16 +23,24 @@ with DAG(
         data = _read_data_and_transform_abt(var=var)
         ti.xcom_push(key="abt_data", value=data)
 
+
     @task
     def save_abt(var=None, ti=None):
         data = ti.xcom_pull(task_ids="read_data_and_transform_abt", key="abt_data")
-        file_name = "abt.csv"
+        _save_abt(data=data, var=var)
 
-        minio_client = MinioClient(var=var, bucket_suffix="GOLD")
-        minio_client.save_data(file_name=file_name, data=data)
+
+    @task
+    def trigger_model_dag():
+        trigger_dag(
+            dag_id="home_credit_model",
+            run_id=str(datetime.now(UTC).isoformat()),
+            conf=None,
+        )
 
     t1 = read_data_and_transform_abt()
     t2 = save_abt()
+    t3 = trigger_model_dag()
 
     t1 >> t2
 
