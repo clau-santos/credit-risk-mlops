@@ -1,0 +1,10 @@
+{
+    "KAGGLE_KEY": "",
+    "KAGGLE_USERNAME": "",
+    "MINIO_ACCESS_KEY": "minioadmin",
+    "MINIO_BUCKET_NAME_GOLD": "gold-data-fia",
+    "MINIO_BUCKET_NAME_RAW": "raw-data-fia",
+    "MINIO_BUCKET_NAME_SILVER": "silver-data-fia",
+    "MINIO_ENDPOINT": "host.docker.internal:9000",
+    "MINIO_SECRET_KEY": "minioadmin"
+}
