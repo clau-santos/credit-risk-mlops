@@ -1,9 +1,7 @@
-# credit-risk-mlops
+## 📊 Modelo de Machine Learning de Sistema Inteligente de Limite de Credito
 Projeto de ponta a ponta para predição de risco de crédito, utilizando técnicas de Machine Learning e práticas de MLOps para automação do pipeline e disponibilização do modelo em produção.
 
 ---
-
-## 📊 Modelo de Machine Learning de Sistema Inteligente de Limite de Credito
 
 ## 📖 Descrição do Projeto
 
@@ -48,6 +46,11 @@ O objetivo deste projeto é desenvolver uma solução baseada em Machine Learnin
 
 ```text
 .
+├── 📁 app/
+│   ├── 📄 de_para.py
+│   ├── 📄 inference.py
+│   └── 📄 preprocess.py
+│
 ├── 📁 Dados/
 │   ├── 📄 raw.csv
 │   ├── 📄 clean_data.csv
@@ -57,17 +60,30 @@ O objetivo deste projeto é desenvolver uma solução baseada em Machine Learnin
 │   ├── 📄 data_sanitization.py
 │   ├── 📄 abt_transform.py
 │   ├── 📄 config.yaml
+│   ├── 📄 exp_analysis.ipynb
 │
 ├── 📁 DataValidator/
 │   ├── 📄 validator.py
-
-├── 📁 model/
+│
+├── 📁 MLOps/
+│   ├── 📁 dags/
+│       ├── 📁 home_credit_data_pipeline/
+│       ├── 📁 home_credit_feature_pipeline/
+│       ├── 📁 home_credit_model/
+│
+│   ├── 📁 docker/
+│       ├── 📄 docker-compose.yaml
+│
+│   ├── 📄 airflow_variables.json
+│   ├── 📄 README.md
+│
+├── 📁 Model/
 │   ├── 📄 train.py
 │   ├── 📄 evaluation.ipynb
 │   ├── 📄 config.yaml
 │   ├── 📄 credit_policy.py
-
-├── 📄 exp_analysis.ipynb
+│   ├── 📄 predict.py
+│
 ├── 📄 requirements.txt
 ├── 📄 README.md
 └── 📄 .gitignore
@@ -208,7 +224,6 @@ O projeto foi desenvolvido seguindo as seguintes etapas:
 - 💾 Joblib
 - ✅ Pydantic
 
-
 ---
 
 # 🚀 Como Executar o Projeto
@@ -217,7 +232,7 @@ O projeto foi desenvolvido seguindo as seguintes etapas:
 
 ```bash
 git clone <url-do-repositorio>
-cd projeto-final-fia
+cd credit-risk-mlops
 ```
 
 ---
@@ -246,7 +261,155 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+# 🚀 Como executar o projeto com Airflow
+
+## 📋 Pré-requisitos
+
+Antes de iniciar, certifique-se de possuir os seguintes requisitos instalados:
+
+- 🐳 Docker Desktop
+
+Além disso, é necessário possuir uma conta no **Kaggle**, utilizada para o download da base de dados do projeto.
+
 ---
+
+## 🐳 1. Iniciar os serviços
+
+1. Abra o **Docker Desktop**.
+2. No terminal do repositório `credit-risk-mlops`, acesse o diretório:
+
+```bash
+MLOps/docker
+```
+
+3. Execute o comando abaixo para iniciar todos os containers:
+
+```bash
+docker compose up -d
+```
+> 💡 **Observação:** Na primeira execução, o processo pode levar alguns minutos, pois as imagens Docker serão baixadas e as dependências serão instaladas.
+
+---
+
+## 🌐 2. Acessar o Airflow
+
+Após a inicialização dos containers, acesse a interface do Airflow:
+
+```
+http://localhost:8080
+```
+
+### 🔑 Credenciais de acesso
+
+| Campo | Valor |
+|--------|-------|
+| **Usuário** | `admin` |
+| **Senha** | `admin` |
+
+---
+
+## ⚙️ 3. Configurar as variáveis do Airflow
+
+O projeto utiliza variáveis do Airflow para armazenar as credenciais de acesso ao Kaggle.
+
+### 🔐 3.1 Gerar um Token da API do Kaggle
+
+1. Acesse sua conta no **Kaggle**.
+2. Clique em **Your API Token**.
+3. Na seção **Legacy API Credentials**, clique em **Create Legacy API Key**.
+4. Será realizado o download do arquivo `kaggle.json`.
+
+Esse arquivo contém as seguintes informações de  `username` e  `key`.
+
+---
+
+### 📝 3.2 Atualizar o arquivo de variáveis
+
+Abra o arquivo:
+
+```
+airflow_variables.json
+```
+
+Substitua os valores das variáveis abaixo pelas informações presentes no arquivo `kaggle.json`:
+
+- `KAGGLE_USERNAME`
+- `KAGGLE_KEY`
+
+---
+
+### 📥 3.3 Importar as variáveis no Airflow
+
+Na interface do Airflow:
+
+1. Acesse **Admin → Variables**.
+2. Clique em **Import Variables**.
+3. Selecione o arquivo `airflow_variables.json`.
+
+> ✅ Após a importação, as DAGs estarão prontas para acessar o Kaggle durante a execução.
+
+---
+
+## ▶️ 4. Executar as DAGs
+
+1. Acesse o menu **DAGs**.
+2. Ative as três Dags que irão aparecer.
+3. Clique em **Trigger DAG** da dag `home_credit_data_pipeline` para iniciar a execução.
+
+📊 É possível acompanhar o andamento da execução pela própria interface do Airflow, acessando os logs de cada tarefa.
+
+---
+
+## 🚀  Execução do Modelo de Predição com o Streamlit
+
+Após concluir o treinamento do modelo, execute a aplicação **Streamlit** para realizar predições por meio da interface web.
+
+1. Abra um terminal na **raiz do repositório**.
+2. Execute o comando abaixo:
+
+```bash
+streamlit run Model/predict.py
+```
+
+3. Aguarde a inicialização da aplicação e acesse o endereço exibido no terminal:
+
+```
+http://localhost:8501
+```
+
+> **Observação:** Certifique-se de que o ambiente virtual esteja ativado e que todas as dependências do projeto tenham sido instaladas antes de iniciar a aplicação.
+
+---
+
+## ✅ Fluxo de execução
+
+```text
+🐳 Docker Compose
+        │
+        ▼
+🌐 Airflow
+        │
+        ▼
+🔐 Configuração das variáveis
+        │
+        ▼
+📥 Download dos dados (Kaggle)
+        │
+        ▼
+🧹 Limpeza dos dados
+        │
+        ▼
+📊 Criação da ABT
+        │
+        ▼
+🤖 Treinamento do modelo
+        │
+        ▼
+📈 Predição de risco de crédito
+```
+   
+
+# ▶️ Executando os scripts pela IDE
 
 # 📊 Gerando a ABT
 
@@ -353,16 +516,3 @@ Por esse motivo foi selecionado como modelo final para estimar a Probabilidade d
 
 ---
 
-# 👩‍💻 Autores
-
-**Cláudia dos Santos Silva**
-
-**Daniel Azevedo**
-
-**Elizabeth Oliveira**
-
-📚 Pós Graduação em Engenharia de Dados
-
-🏫 FIA
-
-📅 2025

@@ -1,0 +1,12 @@
+#Airflow e Modelagem
+pydantic==2.13.4
+minio==7.2.20
+scikit-learn==1.9.0
+kagglehub
+numpy==2.5.0
+PyYAML==6.0.3
+joblib==1.5.3
+pandas==3.0.3
+
+#Interface do usuário
+streamlit==1.59.1
