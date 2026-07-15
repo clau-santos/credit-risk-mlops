@@ -26,7 +26,7 @@ def _validade_raw_data(var=None):
 
     try:
         print("Iniciando validação do contrato de dados.")
-        _data_validation(df=data, model="RAW")
+        _data_validation(df=data, model="RAW", validate_row=True)
         print("Contrato de dados validado com sucesso!")
     except ValueError as e:
         raise AirflowException(
@@ -41,15 +41,14 @@ def _data_transform_and_validation(var):
 
     print("Limpeza dos dados realizada com sucesso!")
 
-    # try:
-    #     print("Iniciando validação do contrato de dados.")
-        # _data_validation(df=data, model="SILVER")
-        # print("Contrato de dados validado com sucesso!")
-    # except Exception as e:
-    #     raise AirflowException(
-    #         f"Falha na validação dos dados da camada SILVER, revise o contrato de dados: {str(e)}"
-    #     )
-
+    try:
+        print("Iniciando validação do contrato de dados.")
+        _data_validation(df=data, model="SILVER", validate_row=True)
+        print("Contrato de dados validado com sucesso!")
+    except Exception as e:
+        raise AirflowException(
+            f"Falha na validação dos dados da camada SILVER, revise o contrato de dados: {str(e)}"
+        )
 
     return data
 

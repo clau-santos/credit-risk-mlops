@@ -1,3 +1,4 @@
+import pandas as pd
 from pydantic import BaseModel, RootModel
 from pydantic import ValidationError
 
@@ -256,16 +257,38 @@ class CleanDataList(RootModel[list[CleanData]]):
 def data_validator(data: list[dict], model: str):
     try:
         if model == "RAW":
-            for d in data:
-                RawData.model_validate(d)
+            RawDataList.model_validate(data)
             print("Dados da camada RAW validados com sucesso!")
             return True
 
         if model == "SILVER":
-            for d in data:
-                CleanData.model_validate(d)
-            print("Dados da camada SILVER validados com sucesso!")
+            CleanDataList.model_validate(data)
+            print("Dados da camada SILVER validados com sucesso! /n"
+                    "Arquivo com os dado")
             return True
+
+    except ValueError:
+        return ValueError(f"Erro na validação dos Dados da camada {model}, revise o modelo de contrato dos dados.")
+
+
+def data_validator_row(data: pd.DataFrame, model: str):
+    columns = data.columns.tolist()
+
+    try:
+        for row in data.itertuples(index=False):
+            record = {
+                col: None if pd.isna(value) else value
+                for col, value in zip(columns, row)
+            }
+            if model == "RAW":
+                RawData.model_validate(record)
+
+            if model == "SILVER":
+
+                CleanData.model_validate(record)
+
+        print(f"Dados da camada {model} validados com sucesso!")
+        return True
 
     except ValidationError as e:
         raise ValueError(f"Erro na validação dos Dados da camada {model}, revise o modelo de contrato dos dados.{e}")

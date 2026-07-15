@@ -23,7 +23,7 @@ import numpy as np
 import pandas as pd
 import yaml
 
-from DataValidator.validator import data_validator
+from DataValidator.validator import data_validator, data_validator_row
 
 # ----- localizar raiz do projeto e carregar config -----
 ROOT = Path(__file__).resolve().parent.parent          # pasta 'Projeto Final - TCC'
@@ -86,12 +86,15 @@ def _data_transform(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def _data_validation(df: pd.DataFrame, model: str) -> None:
+def _data_validation(df: pd.DataFrame, model: str, validate_row: bool = False) -> None:
     """
     Funcão responsável por realizar a validação do contrato de dados
     """
+    if validate_row:
+        return data_validator_row(data=df, model=model)
+
     records = df.replace({np.nan: None}).to_dict(orient="records")
-    data_validator(data=records, model=model)
+    return data_validator(data=records, model=model)
 
 def main():
     df = _read_data()
