@@ -1,0 +1,2 @@
+#rodar o airflow na IDE
+apache-airflow==2.10.5

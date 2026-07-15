@@ -22,7 +22,7 @@ Os principais objetivos são:
 - ✅ Detectar falhas na execução do pipeline;
 - ✅ Garantir a qualidade e integridade dos dados;
 - ✅ Identificar mudanças na distribuição dos dados (*data drift*);
-- ✅ Detectar degradação da performance do modelo (*concept drift*);
+- ✅ Detectar degradação da performance do modelo;
 - ✅ Monitorar o impacto do modelo nos indicadores de negócio.
 
 ---
@@ -123,7 +123,7 @@ Para cada safra, recomenda-se recalcular métricas como:
 - KS
 - Gini
 
-Comparando-as com o baseline obtido durante o treinamento.
+Comparando-as com o Valor de referência obtido durante o treinamento.
 
 | Métrica | Valor de referência |
 |----------|---------:|
@@ -131,7 +131,7 @@ Comparando-as com o baseline obtido durante o treinamento.
 | KS | **0,390** |
 | Gini | **0,524** |
 
-Quedas significativas nessas métricas podem indicar que a relação entre as características dos clientes e o risco de inadimplência mudou ao longo do tempo (**Concept Drift**), reduzindo a capacidade do modelo de realizar previsões precisas.
+Quedas significativas nessas métricas podem indicar que a relação entre as características dos clientes e o risco de inadimplência mudou ao longo do tempo, reduzindo a capacidade do modelo de realizar previsões precisas.
 
 ---
 
@@ -234,7 +234,7 @@ Essa abordagem integra **Machine Learning**, **automação de processos** e **ag
 | **E** | > 60% | Recusa automática, geração de explicação da decisão utilizando IA, oferta de produtos de menor risco e disponibilização de conteúdo de educação financeira. |
 
 
-## 🤖 Automação e Agentes de IA
+# 🤖 Automação e Agentes de IA
 
 Além das ações automatizadas por faixa de risco, o sistema pode integrar agentes de IA para executar tarefas específicas ao longo do processo de concessão de crédito, tornando a análise mais rápida, padronizada e eficiente.
 

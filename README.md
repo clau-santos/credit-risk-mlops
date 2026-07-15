@@ -1,7 +1,39 @@
-## 📊 Modelo de Machine Learning de Sistema Inteligente de Limite de Credito
+# 📊 Modelo de Machine Learning de Sistema Inteligente de Limite de Credito
 Projeto de ponta a ponta para predição de risco de crédito, utilizando técnicas de Machine Learning e práticas de MLOps para automação do pipeline e disponibilização do modelo em produção.
 
 ---
+
+## 📑 Índice
+
+- [📖 Descrição do Projeto](#-descrição-do-projeto)
+- [🎯 Problema de Negócio](#-problema-de-negócio)
+- [🧠 Objetivo do Projeto](#-objetivo-do-projeto)
+
+- [🚀 Como Executar o Projeto](#-como-executar-o-projeto)
+
+- [🐳 Executando com Airflow](#-como-executar-o-projeto-com-airflow)
+- [🚀 Execução do Streamlit](#-execução-do-modelo-de-predição-com-o-streamlit)
+
+- [▶️ Executando os scripts pela IDE](#️-executando-os-scripts-pela-ide)
+
+- [📂 Estrutura do Projeto](#-estrutura-do-projeto)
+
+- [🔄 Fluxo dos Dados](#-fluxo-dos-dados)
+
+- [🗃️ Base de Dados](#️-base-de-dados)
+
+- [🔬 Metodologia](#-metodologia)
+
+- [🤖 Modelos Avaliados](#-modelos-avaliados)
+
+- [📏 Métricas Utilizadas](#-métricas-utilizadas)
+
+- [🛠️ Tecnologias Utilizadas](#️-tecnologias-utilizadas)
+
+- [🏅 Resultados](#-resultados)
+
+
+___
 
 ## 📖 Descrição do Projeto
 
@@ -42,190 +74,6 @@ O objetivo deste projeto é desenvolver uma solução baseada em Machine Learnin
 
 ---
 
-# 📂 Estrutura do Projeto
-
-```text
-.
-├── 📁 app/
-│   ├── 📄 de_para.py
-│   ├── 📄 inference.py
-│   └── 📄 preprocess.py
-│
-├── 📁 Dados/
-│   ├── 📄 raw.csv
-│   ├── 📄 clean_data.csv
-│   └── 📄 abt.csv
-│
-├── 📁 DataPipeline/
-│   ├── 📄 data_sanitization.py
-│   ├── 📄 abt_transform.py
-│   ├── 📄 config.yaml
-│   ├── 📄 exp_analysis.ipynb
-│
-├── 📁 DataValidator/
-│   ├── 📄 validator.py
-│
-├── 📁 MLOps/
-│   ├── 📁 dags/
-│       ├── 📁 home_credit_data_pipeline/
-│       ├── 📁 home_credit_feature_pipeline/
-│       ├── 📁 home_credit_model/
-│
-│   ├── 📁 docker/
-│       ├── 📄 docker-compose.yaml
-│
-│   ├── 📄 airflow_variables.json
-│   ├── 📄 README.md
-│
-├── 📁 Model/
-│   ├── 📄 train.py
-│   ├── 📄 evaluation.ipynb
-│   ├── 📄 config.yaml
-│   ├── 📄 credit_policy.py
-│   ├── 📄 predict.py
-│
-├── 📄 requirements.txt
-├── 📄 README.md
-└── 📄 .gitignore
-```
-
-## 📁 Descrição dos Diretórios
-
-| Diretório/Arquivo                   | Descrição                                                         |
-|-------------------------------------|-------------------------------------------------------------------|
-| 📁 **Dados/raw.csv**                | Dados originais obtidos da fonte, sem qualquer tratamento.        |
-| 📁 **Dados/clean_data.csv**         | Dados tratados e prontos para geração da ABT.                     |
-| 📁 **Dados/abt.csv**                | Dados tratados e prontos para utilização nos modelos.             |
-| 🛠️ **DataPipeline/data_sanitization.py** | Scripts de leitura, limpeza e preparação dos dados.               |
-| 📑 **DataPipeline/abt_transform.py** | Scripts responsáveis pela engenharia e seleção de atributos.      |
-| 📊 **DataPipeline/exp_analysis**    | Notebooks de exploração dos dados, experimentos e análises.       |
-| ⚙️ **DataPipeline/config.yaml**     | Arquivo de configuração para os arquivos em DataPipeline.         |
-| 🔧 **DataValidator/validator.py**   | Classes do Pydantic e validação dos contratos de dados esperados. |
-| 💾 **Model/train.py**               | Script para treinamento, validação e salvamento dos modelos.      |
-| 📓 **Model/evaluation.ipynb**       | Notebooks de exploração dos dados, experimentos e análises.       |
-| 🤖 **Model/credit_policy.py**       | Script com a politica de crédito que será utilizada.              |
-| ⚙️ **Model/config.yaml**            | Arquivo de configuração do modelo.                                |
-| 📑 **requirements.txt**             | Métricas e resultados dos experimentos.                           |
----
-
-
-## 🔄 Fluxo dos Dados
-
-O projeto segue um pipeline estruturado para transformar os dados brutos em uma recomendação de crédito baseada em Machine Learning.
-
-```text
-application_train.csv (Kaggle)
-              │
-              ▼
-1_data_sanitization.py
-- Validação dos dados (Pydantic)
-- Limpeza e padronização
-- Tratamento de valores ausentes
-- Remoção de inconsistências
-              │
-              ▼
-clean_data.csv
-              │
-              ▼
-2_abt_transform.py
-- Engenharia de atributos
-- Seleção de variáveis
-- Encoding das variáveis categóricas
-- Imputação de valores faltantes
-              │
-              ▼
-abt.csv
-              │
-              ▼
-3_train.py
-- Divisão treino/teste
-- Treinamento dos modelos
-- Avaliação (ROC-AUC, KS e Gini)
-- Seleção do melhor modelo
-              │
-              ▼
-model_pd.pkl
-metrics.json
-test_predictions.csv
-              │
-              ▼
-credit_policy.py
-- Estima a Probabilidade de Default (PD)
-- Classifica o cliente por faixa de risco
-- Calcula o limite de crédito recomendado
-- Define o prazo máximo da operação
-              │
-              ▼
-Decisão Final de Crédito
-(Aprovar, Limite e Prazo)
-```
-
-# 🗃️ Base de Dados
-
-O projeto utiliza a base pública Home Credit Default Risk, disponibilizada no Kaggle.
-A base contém aproximadamente 307 mil solicitações de crédito com informações cadastrais, financeiras e comportamentais dos clientes.
-O objetivo é prever a probabilidade de inadimplência (TARGET), permitindo apoiar a definição do limite de crédito adequado para novos clientes.
-
-A base contém informações como:
-
-- 💰 Renda
-- 💳 Cartões de crédito
-- 🏦 Empréstimos anteriores
-- 📅 Histórico de pagamentos
-- 📈 Parcelas
-- 👤 Informações cadastrais
-
----
-
-# 🔬 Metodologia
-
-O projeto foi desenvolvido seguindo as seguintes etapas:
-
-- 📥 Coleta dos dados
-- 🔍 Análise Exploratória dos Dados (EDA)
-- 🧹 Limpeza e tratamento dos dados
-- ❓ Tratamento de valores ausentes
-- 🏗️ Engenharia de atributos
-- 🔄 Transformação das variáveis
-- ✂️ Divisão entre treino e teste
-- 🤖 Treinamento dos modelos
-- 🎛️ Ajuste de hiperparâmetros
-- 📊 Avaliação dos resultados
-- 🏆 Seleção do melhor modelo
-
----
-
-# 🤖 Modelos Avaliados
-
-- 📉 Regressão Logística
-- 🌲 HistGradientBoosting (Modelo Principal)
-
----
-
-# 📏 Métricas Utilizadas
-
-- 📈 ROC-AUC 
-- 📏 KS (Kolmogorov-Smirnov) 
-- 📊 Gini 
-- 🧩 Matriz de Confusão 
-- 🎯 Precision 
-- 🔎 Recall 
-- ⚖️ F1-Score
----
-
-# 🛠️ Tecnologias Utilizadas
-
-- 🐍 Python
-- 🐼 Pandas
-- 🔢 NumPy
-- 🤖 Scikit-Learn
-- 📊 Matplotlib
-- 📄 PyYAML
-- 💾 Joblib
-- ✅ Pydantic
-
----
-
 # 🚀 Como Executar o Projeto
 
 ## 1️⃣ Clone o repositório
@@ -252,6 +100,9 @@ venv\Scripts\activate
 python3 -m venv venv
 source venv/bin/activate
 ```
+
+> ⚠️
+> Este projeto foi desenvolvido e testado utilizando **Python 3.12**. O uso de outras versões pode ocasionar erros de compatibilidade.
 
 ---
 
@@ -493,6 +344,190 @@ Rode o arquivo:
 ```
 
 ---
+
+# 📂 Estrutura do Projeto
+
+```text
+.
+├── 📁 app/
+│   ├── 📄 de_para.py
+│   ├── 📄 inference.py
+│   └── 📄 preprocess.py
+│
+├── 📁 Dados/
+│   ├── 📄 raw.csv
+│   ├── 📄 clean_data.csv
+│   └── 📄 abt.csv
+│
+├── 📁 DataPipeline/
+│   ├── 📄 data_sanitization.py
+│   ├── 📄 abt_transform.py
+│   ├── 📄 config.yaml
+│   ├── 📄 exp_analysis.ipynb
+│
+├── 📁 DataValidator/
+│   ├── 📄 validator.py
+│
+├── 📁 MLOps/
+│   ├── 📁 dags/
+│       ├── 📁 home_credit_data_pipeline/
+│       ├── 📁 home_credit_feature_pipeline/
+│       ├── 📁 home_credit_model/
+│
+│   ├── 📁 docker/
+│       ├── 📄 docker-compose.yaml
+│
+│   ├── 📄 airflow_variables.json
+│   ├── 📄 README.md
+│
+├── 📁 Model/
+│   ├── 📄 train.py
+│   ├── 📄 evaluation.ipynb
+│   ├── 📄 config.yaml
+│   ├── 📄 credit_policy.py
+│   ├── 📄 predict.py
+│
+├── 📄 requirements.txt
+├── 📄 README.md
+└── 📄 .gitignore
+```
+
+## 📁 Descrição dos Diretórios
+
+| Diretório/Arquivo                   | Descrição                                                         |
+|-------------------------------------|-------------------------------------------------------------------|
+| 📁 **Dados/raw.csv**                | Dados originais obtidos da fonte, sem qualquer tratamento.        |
+| 📁 **Dados/clean_data.csv**         | Dados tratados e prontos para geração da ABT.                     |
+| 📁 **Dados/abt.csv**                | Dados tratados e prontos para utilização nos modelos.             |
+| 🛠️ **DataPipeline/data_sanitization.py** | Scripts de leitura, limpeza e preparação dos dados.               |
+| 📑 **DataPipeline/abt_transform.py** | Scripts responsáveis pela engenharia e seleção de atributos.      |
+| 📊 **DataPipeline/exp_analysis**    | Notebooks de exploração dos dados, experimentos e análises.       |
+| ⚙️ **DataPipeline/config.yaml**     | Arquivo de configuração para os arquivos em DataPipeline.         |
+| 🔧 **DataValidator/validator.py**   | Classes do Pydantic e validação dos contratos de dados esperados. |
+| 💾 **Model/train.py**               | Script para treinamento, validação e salvamento dos modelos.      |
+| 📓 **Model/evaluation.ipynb**       | Notebooks de exploração dos dados, experimentos e análises.       |
+| 🤖 **Model/credit_policy.py**       | Script com a politica de crédito que será utilizada.              |
+| ⚙️ **Model/config.yaml**            | Arquivo de configuração do modelo.                                |
+| 📑 **requirements.txt**             | Métricas e resultados dos experimentos.                           |
+---
+
+
+## 🔄 Fluxo dos Dados
+
+O projeto segue um pipeline estruturado para transformar os dados brutos em uma recomendação de crédito baseada em Machine Learning.
+
+```text
+application_train.csv (Kaggle)
+              │
+              ▼
+1_data_sanitization.py
+- Validação dos dados (Pydantic)
+- Limpeza e padronização
+- Tratamento de valores ausentes
+- Remoção de inconsistências
+              │
+              ▼
+clean_data.csv
+              │
+              ▼
+2_abt_transform.py
+- Engenharia de atributos
+- Seleção de variáveis
+- Encoding das variáveis categóricas
+- Imputação de valores faltantes
+              │
+              ▼
+abt.csv
+              │
+              ▼
+3_train.py
+- Divisão treino/teste
+- Treinamento dos modelos
+- Avaliação (ROC-AUC, KS e Gini)
+- Seleção do melhor modelo
+              │
+              ▼
+model_pd.pkl
+metrics.json
+test_predictions.csv
+              │
+              ▼
+credit_policy.py
+- Estima a Probabilidade de Default (PD)
+- Classifica o cliente por faixa de risco
+- Calcula o limite de crédito recomendado
+- Define o prazo máximo da operação
+              │
+              ▼
+Decisão Final de Crédito
+(Aprovar, Limite e Prazo)
+```
+
+# 🗃️ Base de Dados
+
+O projeto utiliza a base pública Home Credit Default Risk, disponibilizada no Kaggle.
+A base contém aproximadamente 307 mil solicitações de crédito com informações cadastrais, financeiras e comportamentais dos clientes.
+O objetivo é prever a probabilidade de inadimplência (TARGET), permitindo apoiar a definição do limite de crédito adequado para novos clientes.
+
+A base contém informações como:
+
+- 💰 Renda
+- 💳 Cartões de crédito
+- 🏦 Empréstimos anteriores
+- 📅 Histórico de pagamentos
+- 📈 Parcelas
+- 👤 Informações cadastrais
+
+---
+
+# 🔬 Metodologia
+
+O projeto foi desenvolvido seguindo as seguintes etapas:
+
+- 📥 Coleta dos dados
+- 🔍 Análise Exploratória dos Dados (EDA)
+- 🧹 Limpeza e tratamento dos dados
+- ❓ Tratamento de valores ausentes
+- 🏗️ Engenharia de atributos
+- 🔄 Transformação das variáveis
+- ✂️ Divisão entre treino e teste
+- 🤖 Treinamento dos modelos
+- 🎛️ Ajuste de hiperparâmetros
+- 📊 Avaliação dos resultados
+- 🏆 Seleção do melhor modelo
+
+---
+
+# 🤖 Modelos Avaliados
+
+- 📉 Regressão Logística
+- 🌲 HistGradientBoosting (Modelo Principal)
+
+---
+
+# 📏 Métricas Utilizadas
+
+- 📈 ROC-AUC 
+- 📏 KS (Kolmogorov-Smirnov) 
+- 📊 Gini 
+- 🧩 Matriz de Confusão 
+- 🎯 Precision 
+- 🔎 Recall 
+- ⚖️ F1-Score
+---
+
+# 🛠️ Tecnologias Utilizadas
+
+- 🐍 Python
+- 🐼 Pandas
+- 🔢 NumPy
+- 🤖 Scikit-Learn
+- 📊 Matplotlib
+- 📄 PyYAML
+- 💾 Joblib
+- ✅ Pydantic
+
+___
 
 # 🏅 Resultados
 
