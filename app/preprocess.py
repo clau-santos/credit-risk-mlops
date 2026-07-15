@@ -112,7 +112,7 @@ def build_features(
             row[col] = 0
 
     # Sexo
-    gender_col = f"CODE_GENDER_{"F" if sexo == "Feminino" else "M"}"
+    gender_col = f"CODE_GENDER_{'F' if sexo == 'Feminino' else 'M'}"
 
     if gender_col in row:
         row[gender_col] = 1

@@ -42,7 +42,7 @@ with DAG(
     t2 = save_abt()
     t3 = trigger_model_dag()
 
-    t1 >> t2
+    t1 >> t2 >> t3
 
 if __name__ == "__main__":
     dag.test()

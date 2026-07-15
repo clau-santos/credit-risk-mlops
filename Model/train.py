@@ -50,7 +50,13 @@ def ks_gini(y_true, proba):
     return auc, ks, float(2 * auc - 1)
 
 
-def main(df=None):
+def main(df= pd.DataFrame):
+    if df.empty:
+        if not ABT.exists():
+            sys.exit(f"[ERRO] ABT nao encontrada: {ABT}\nRode antes o 2_abt_transform.py")
+
+        print(f"[1/5] Lendo ABT: {ABT.name}")
+        df = pd.read_csv(ABT)
     y = df[TGT].astype(int)
     X = df.drop(columns=[TGT, ID])
     print(f"      -> {X.shape[0]:,} linhas x {X.shape[1]} features | inadimplencia {y.mean():.2%}")
